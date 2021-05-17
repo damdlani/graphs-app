@@ -20,6 +20,11 @@ export default function Home() {
             <a>Blog Post</a>
           </Link>
         </li>
+        <li>
+          <Link href="/subpage">
+            <a>Subpage</a>
+          </Link>
+        </li>
       </ul>
     </div>
   );

@@ -7,7 +7,7 @@ const link = new HttpLink({
 
 const client = new ApolloClient({
     uri: API_URL,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache()
 });
 
 export default client;

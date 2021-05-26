@@ -10,6 +10,19 @@ const PublicGraphPage = ({ data }) => {
 
   return (
     <>
+      {loading && <p>loading</p>}
+      {latest && latest.twenty20.map((launch, index) => {
+        return (
+          <div key={index}>
+            <span>
+              <b>{launch.launch_year}</b>
+            </span>
+            <div>
+              {launch.rocket.second_stage.payloads[0].payload_mass_kg} kg
+            </div>
+          </div>
+        );
+      })}
       {oldLaunches.map((launch, index) => {
         return (
           <div key={index}>

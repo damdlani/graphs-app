@@ -1,11 +1,12 @@
-import NextAuth from "next-auth"
-import Providers from "next-auth/providers"
+import NextAuth from "next-auth";
+import Providers from "next-auth/providers";
 
-const isCorrectCredentials = credentials =>
+const isCorrectCredentials = (credentials) =>
   credentials.username === process.env.NEXTAUTH_USERNAME &&
-  credentials.password === process.env.NEXTAUTH_PASSWORD
+  credentials.password === process.env.NEXTAUTH_PASSWORD;
 
 const options = {
+  site: process.env.NEXTAUTH_URL,
   providers: [
     Providers.Credentials({
       // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -14,17 +15,22 @@ const options = {
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "admin", value: "admin" },
-        password: { label: "Password", type: "password", value: "admin"},
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "admin",
+          value: "admin",
+        },
+        password: { label: "Password", type: "password", value: "admin" },
       },
-      authorize: async credentials => {
+      authorize: async (credentials) => {
         if (isCorrectCredentials(credentials)) {
-          const user = { id: 1, name: "Dolly" }
+          const user = { id: 1, name: "Dolly" };
           // Any object returned will be saved in `user` property of the JWT
-          return Promise.resolve(user)
+          return Promise.resolve(user);
         } else {
           // If you return null or false then the credentials will be rejected
-          return Promise.resolve(null)
+          return Promise.resolve(null);
           // You can also Reject this callback with an Error or with a URL:
           // return Promise.reject(new Error('error message')) // Redirect to error page
           // return Promise.reject('/')        // Redirect to a URL
@@ -32,6 +38,14 @@ const options = {
       },
     }),
   ],
-}
+  callbacks: {
+    redirect: async (url, _) => {
+      if (url === "/api/auth/signin") {
+        return Promise.resolve("/private");
+      }
+      return Promise.resolve("/private");
+    },
+  },
+};
 
-export default (req, res) => NextAuth(req, res, options)
+export default (req, res) => NextAuth(req, res, options);

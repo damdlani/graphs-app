@@ -31,8 +31,10 @@ const options = {
     }),
   ],
   callbacks: {
-    redirect: async (url, _) => {
-      return Promise.resolve(url);
+    async redirect(url, baseUrl) {
+      return url.startsWith(baseUrl)
+        ? url
+        : baseUrl
     },
   },
 };
